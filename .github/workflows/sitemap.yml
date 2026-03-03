@@ -18,7 +18,7 @@ jobs:
 
       - name: Generate sitemap.xml
         run: |
-          SITE_URL="https://interns.pinoyseoul.com"
+          SITE_URL="https://internship.pinoyseoul.com"
           TODAY=$(date +%Y-%m-%d)
 
           cat > sitemap.xml << EOF
