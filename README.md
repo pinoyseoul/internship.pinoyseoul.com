@@ -2,7 +2,7 @@
 
 **Landing page for the PinoySeoul Digital Media Internship Program (DMIP)**
 
-🔗 **Live Site:** [interns.pinoyseoul.com](https://interns.pinoyseoul.com)
+🔗 **Live Site:** [internship.pinoyseoul.com](https://internship.pinoyseoul.com)
 
 ---
 
@@ -31,9 +31,7 @@ This is the official landing page for the PinoySeoul Digital Media Internship Pr
 
 ## Authors
 
-- **Adrian Montaniel** — Program Director
-- **[Intern Name]** — Web Development & Deployment
-- **Antigravity AI** — Web Design & Development
+- **Adrian Montaniel** — Web Development & Deployment
 
 ## License
 
