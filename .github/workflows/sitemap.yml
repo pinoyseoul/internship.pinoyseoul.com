@@ -1,0 +1,59 @@
+name: Generate Sitemap
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-sitemap:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate sitemap.xml
+        run: |
+          SITE_URL="https://interns.pinoyseoul.com"
+          TODAY=$(date +%Y-%m-%d)
+
+          cat > sitemap.xml << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+          EOF
+
+          # Add index page
+          echo "  <url>" >> sitemap.xml
+          echo "    <loc>${SITE_URL}/</loc>" >> sitemap.xml
+          echo "    <lastmod>${TODAY}</lastmod>" >> sitemap.xml
+          echo "    <changefreq>weekly</changefreq>" >> sitemap.xml
+          echo "    <priority>1.0</priority>" >> sitemap.xml
+          echo "  </url>" >> sitemap.xml
+
+          # Scan for any additional HTML pages
+          for file in $(find . -name "*.html" -not -name "index.html" -not -path "./.git/*"); do
+            page=$(echo "$file" | sed 's|^\./||')
+            echo "  <url>" >> sitemap.xml
+            echo "    <loc>${SITE_URL}/${page}</loc>" >> sitemap.xml
+            echo "    <lastmod>${TODAY}</lastmod>" >> sitemap.xml
+            echo "    <changefreq>monthly</changefreq>" >> sitemap.xml
+            echo "    <priority>0.8</priority>" >> sitemap.xml
+            echo "  </url>" >> sitemap.xml
+          done
+
+          echo "</urlset>" >> sitemap.xml
+
+          echo "✅ Sitemap generated:"
+          cat sitemap.xml
+
+      - name: Commit and push sitemap
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add sitemap.xml
+          git diff --staged --quiet || git commit -m "chore: auto-generate sitemap.xml [skip ci]"
+          git push
